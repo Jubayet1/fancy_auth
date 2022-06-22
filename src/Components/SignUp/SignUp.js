@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { createUserWithEmailAndPassword } from "firebase/auth";
-import auth from "../../firebase.init";
+import auth, { signInWithGoogle } from "../../firebase.init";
 
 const SignUp = () => {
   const [email, setEmail] = useState("");
@@ -9,6 +9,7 @@ const SignUp = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    console.log(email, password);
     createUserWithEmailAndPassword(auth, email, password)
       .then((userCredential) => {
         // Signed in
@@ -91,6 +92,7 @@ const SignUp = () => {
               <button
                 type="submit"
                 className="w-full flex justify-center bg-blue-400  hover:bg-blue-700 text-gray-100 p-3 mb-4 rounded-full tracking-wide font-semibold  shadow-lg cursor-pointer transition ease-in duration-100"
+                onClick={signInWithGoogle}
               >
                 CONTINUE WITH GOOGLE
               </button>

@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { signInWithEmailAndPassword } from "firebase/auth";
-import auth from "../../firebase.init";
+import auth, { signInWithGoogle } from "../../firebase.init";
 
 const LogIn = () => {
   const [email, setEmail] = useState("");
@@ -14,13 +14,13 @@ const LogIn = () => {
       .then((userCredential) => {
         // Signed in
         const user = userCredential.user;
-        console.log(user)
+        console.log(user);
         // ...
       })
       .catch((error) => {
         const errorCode = error.code;
         const errorMessage = error.message;
-        console.log(errorCode, errorMessage)
+        console.log(errorCode, errorMessage);
       });
   };
   return (
@@ -90,6 +90,7 @@ const LogIn = () => {
               <button
                 type="submit"
                 className="w-full flex justify-center bg-blue-400  hover:bg-blue-700 text-gray-100 p-3 mb-4 rounded-full tracking-wide font-semibold  shadow-lg cursor-pointer transition ease-in duration-100"
+                onClick={signInWithGoogle}
               >
                 CONTINUE WITH GOOGLE
               </button>
