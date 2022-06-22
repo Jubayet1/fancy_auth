@@ -1,28 +1,34 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { signInWithEmailAndPassword } from "firebase/auth";
 import auth, { signInWithGoogle } from "../../firebase.init";
+import { BlogContext } from "../../App";
+
 
 const LogIn = () => {
+const [blogs, setBlogs] = useContext(BlogContext);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const navigate = useNavigate();
 
   const handleSubmit = (e) => {
     e.preventDefault();
     console.log(email, password);
     signInWithEmailAndPassword(auth, email, password)
       .then((userCredential) => {
-        // Signed in
+        setBlogs(userCredential)
         const user = userCredential.user;
-        console.log(user);
+        if (user.email) {
+          return navigate("/profile");
+        }
         // ...
       })
-      .catch((error) => {
-        const errorCode = error.code;
-        const errorMessage = error.message;
-        console.log(errorCode, errorMessage);
-      });
+      .catch((error) => {});
   };
+
+
+  
   return (
     <div className="bg-no-repeat bg-cover bg-center relative">
       <div className="absolute bg-gradient-to-b from-blue-800 to-blue-400 opacity-75 inset-0 z-0"></div>
