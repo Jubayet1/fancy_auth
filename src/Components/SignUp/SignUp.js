@@ -1,11 +1,31 @@
-import React from "react";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
+import { createUserWithEmailAndPassword } from "firebase/auth";
+import auth from "../../firebase.init";
 
 const SignUp = () => {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    createUserWithEmailAndPassword(auth, email, password)
+      .then((userCredential) => {
+        // Signed in
+        const user = userCredential.user;
+        console.log(user);
+        // ...
+      })
+      .catch((error) => {
+        const errorCode = error.code;
+        const errorMessage = error.message;
+        console.error(errorCode, errorMessage);
+        // ..
+      });
+  };
+
   return (
-    <div
-      className="bg-no-repeat bg-cover bg-center relative"
-    >
+    <div className="bg-no-repeat bg-cover bg-center relative">
       <div className="absolute bg-gradient-to-b from-blue-800 to-blue-400 opacity-75 inset-0 z-0"></div>
       <div className="min-h-screen sm:flex sm:flex-row mx-0 justify-center">
         <div className="flex-col flex  self-center p-10 sm:max-w-5xl xl:max-w-2xl  z-10">
@@ -31,8 +51,11 @@ const SignUp = () => {
                 </label>
                 <input
                   className=" w-full text-base px-4 py-2 border  border-gray-300 rounded-lg focus:outline-none focus:border-green-400"
-                  type=""
+                  type="email"
                   placeholder="mail@gmail.com"
+                  onChange={(e) => {
+                    setEmail(e.target.value);
+                  }}
                 />
               </div>
               <div className="space-y-2">
@@ -41,8 +64,11 @@ const SignUp = () => {
                 </label>
                 <input
                   className="w-full content-center text-base px-4 py-2 border  border-gray-300 rounded-lg focus:outline-none focus:border-green-400"
-                  type=""
+                  type="password"
                   placeholder="Enter your password"
+                  onChange={(e) => {
+                    setPassword(e.target.value);
+                  }}
                 />
               </div>
               <div className="flex items-center justify-center">
@@ -54,6 +80,7 @@ const SignUp = () => {
                 <button
                   type="submit"
                   className="w-full flex justify-center bg-green-400  hover:bg-green-500 text-gray-100 p-3  rounded-full tracking-wide font-semibold  shadow-lg cursor-pointer transition ease-in duration-500"
+                  onClick={handleSubmit}
                 >
                   SIGN UP
                 </button>
@@ -61,25 +88,15 @@ const SignUp = () => {
             </div>
             <div className="divider"></div>
             <div>
-                <button
-                  type="submit"
-                  className="w-full flex justify-center bg-blue-400  hover:bg-blue-700 text-gray-100 p-3 mb-4 rounded-full tracking-wide font-semibold  shadow-lg cursor-pointer transition ease-in duration-100"
-                >
-                  CONTINUE WITH GOOGLE
-                </button>
-              </div>
-              <div>
-                <button
-                  type="submit"
-                  className="w-full flex justify-center bg-blue-400  hover:bg-blue-700 text-gray-100 p-3 mb-4 rounded-full tracking-wide font-semibold  shadow-lg cursor-pointer transition ease-in duration-100"
-                >
-                  CONTINUE WITH FACEBOOK
-                </button>
-              </div>
+              <button
+                type="submit"
+                className="w-full flex justify-center bg-blue-400  hover:bg-blue-700 text-gray-100 p-3 mb-4 rounded-full tracking-wide font-semibold  shadow-lg cursor-pointer transition ease-in duration-100"
+              >
+                CONTINUE WITH GOOGLE
+              </button>
+            </div>
             <div className="pt-5 text-center text-gray-400 text-xs">
-              <span>
-                Copyright © 2022
-              </span>
+              <span>Copyright © 2022</span>
             </div>
           </div>
         </div>
